@@ -28,7 +28,7 @@ import com.google.appinventor.components.runtime.util.conscent.GDPRUtils;
         nonVisible = true,
         iconName = "images/rewardedvideo.png")
 @SimpleObject
-@UsesLibraries(libraries = "google-play-services.jar,gson-2.1.jar,firebase.jar")
+@UsesLibraries(libraries = "google-play-services.jar,gson-2.1.jar")
 @UsesPermissions(permissionNames = "android.permission.INTERNET,android.permission.ACCESS_NETWORK_STATE" )
 public class RewardedVideo extends AndroidNonvisibleComponent implements Component, RewardedVideoAdListener {
 

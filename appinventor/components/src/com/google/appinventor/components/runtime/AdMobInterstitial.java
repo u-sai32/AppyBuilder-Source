@@ -34,7 +34,7 @@ import java.util.Date;
                    nonVisible = true,
                    iconName = "images/admobInterstitial.png")
 @SimpleObject
-@UsesLibraries(libraries = "google-play-services.jar,gson-2.1.jar,firebase.jar")
+@UsesLibraries(libraries = "google-play-services.jar,gson-2.1.jar")
 @UsesPermissions(permissionNames = "android.permission.INTERNET,android.permission.ACCESS_NETWORK_STATE"
 )
 public class AdMobInterstitial extends AndroidNonvisibleComponent implements Component {

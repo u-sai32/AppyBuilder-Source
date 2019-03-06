@@ -35,7 +35,7 @@ import java.util.Date;
                 "<p>NOTE: YOU MUST SET SCREEN1 SIZING PROPERTY TO RESPONSIVE ",
         version = YaVersion.ADMOB_COMPONENT_VERSION)
 @SimpleObject
-@UsesLibraries(libraries = "google-play-services.jar,gson-2.1.jar,firebase.jar")
+@UsesLibraries(libraries = "google-play-services.jar,gson-2.1.jar")
 @UsesPermissions(permissionNames = "android.permission.INTERNET,android.permission.ACCESS_NETWORK_STATE"
 )
 
@@ -61,7 +61,6 @@ public final class AdMob extends AndroidViewComponent
     private String TAG = "AdMob";
 
     private boolean targetForChildren = false;
-    private String privateFirebaseUrl = "";
 
     public AdMob(ComponentContainer container) {
         super(container);
