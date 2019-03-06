@@ -458,8 +458,6 @@ public final class SimpleComponentDescriptor {
       return new MockGoogleMap(editor);
     } else if (name.equals(MockXYChart.TYPE)) {
       return new MockXYChart(editor);
-    } else if (name.equals(MockXYChart.TYPE)) {
-      return new MockXYChart(editor);
     } else if (name.equals(MockGridView.TYPE)) {
       return new MockGridView(editor);
     } else if (name.equals(MockProgressBar.TYPE)) {

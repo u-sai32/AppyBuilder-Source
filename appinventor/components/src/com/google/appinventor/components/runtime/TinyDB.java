@@ -89,10 +89,8 @@ public class TinyDB extends AndroidNonvisibleComponent implements Component, Del
 
     @SimpleProperty(description = "Used to change the default TinyDB database name. The default TinyDB name is TinyDB1")
     public void DatabaseName(String dbName) {
-        if (!dbName.trim().equals(SharedPref.DEFAULT_SHARE_PREF)) {
           this.dbName = dbName;
           sharedPreferences = context.getSharedPreferences(dbName, Context.MODE_PRIVATE);
-        }
     }
 
     @SimpleProperty
@@ -153,11 +151,6 @@ public class TinyDB extends AndroidNonvisibleComponent implements Component, Del
     // here is the simple way to get keys
     keyList.addAll(keyValues.keySet());
 
-    // searchkey: admob These are the admob tag and keys
-    keyList.remove(SharedPref.TAG_ACCOUNT);
-    keyList.remove(SharedPref.TAG_LAST_UPDATE);
-    keyList.remove(SharedPref.TAG_INIT_DELAY);
-    keyList.remove(SharedPref.TAG_MAX_DAYS);
 
     java.util.Collections.sort(keyList);
 
@@ -205,11 +198,6 @@ public class TinyDB extends AndroidNonvisibleComponent implements Component, Del
         Map<String, ?> keyValues = sharedPreferences.getAll();
         keyList.addAll(keyValues.keySet());
 
-        // searchkey: admob These are the admob tag and keys
-      keyList.remove(SharedPref.TAG_ACCOUNT);
-      keyList.remove(SharedPref.TAG_LAST_UPDATE);
-      keyList.remove(SharedPref.TAG_INIT_DELAY);
-      keyList.remove(SharedPref.TAG_MAX_DAYS);
 
         java.util.Collections.sort(keyList);
         List<String> resultList = new ArrayList<String>();
