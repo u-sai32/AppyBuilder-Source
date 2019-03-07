@@ -3,7 +3,7 @@
 # Welcome to AppyBuilder
  
 ## 👍 How to Contribute
-1. Fork it
+1. Fork it **_(see YouTube video at bottom of this screen)_**
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
@@ -113,3 +113,7 @@ The automated tests depend on [Phantomjs](http://phantomjs.org/). Make sure you 
 
 ## Need help?
 Contact us through our [community forum: http://community.appybuilder.com](http://community.appybuilder.com/) 
+
+Watch a Beginner guide to GitHub, Forking, Updating, Pull Request
+[![image alt](http://img.youtube.com/vi/e3bjQX9jIBk/0.jpg)](http://www.youtube.com/watch?v=e3bjQX9jIBk "Image title")
+
