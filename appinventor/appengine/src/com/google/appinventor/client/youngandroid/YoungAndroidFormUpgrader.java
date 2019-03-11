@@ -131,7 +131,6 @@ public final class  YoungAndroidFormUpgrader {
 
     String componentType = componentProperties.get("$Type").asString().getString();
 
-    //todo: hossein. Skip the extension utils
     if ("listutils dateutils textutils".contains(componentType.toLowerCase())) {
       return;
     }

@@ -106,9 +106,10 @@ public final class ComponentDescriptorGenerator extends ComponentProcessor {
     sb.append(component.getNonVisible());
     sb.append("\",\n  \"iconName\": \"");
     sb.append(component.getIconName());
-    sb.append("\",\n  \"properties\": [");
-    outputConditionalAnnotations(component, sb);
 
+    outputConditionalAnnotations(component, sb);
+//    sb.append("\",\n  \"properties\": [");
+    sb.append(",\n  \"properties\": [");
     String separator = "";
     Set<String> alwaysSendProperties = new HashSet<String>();
     Map<String, String> defaultValues = new HashMap<String, String>();
@@ -196,6 +197,7 @@ public final class ComponentDescriptorGenerator extends ComponentProcessor {
    * @param sb The StringBuilder to receive the JSON descriptor.
    */
   private void outputConditionalAnnotations(ComponentInfo component, StringBuilder sb) {
+    sb.append("\"");
     if (component.conditionalPermissions.size() +
             component.conditionalBroadcastReceivers.size() == 0) {
       return;

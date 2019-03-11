@@ -422,7 +422,6 @@ Blockly.Yail.getPropertySettersLines = function(componentJson, componentName, co
  */
 Blockly.Yail.getPropertySetterString = function(componentName, componentType, propertyName, 
     propertyValue, componentDb) {
-  console.log("hossein: starting getPropertySetterStrings" );
   var code = Blockly.Yail.YAIL_SET_AND_COERCE_PROPERTY + Blockly.Yail.YAIL_QUOTE +
     componentName + Blockly.Yail.YAIL_SPACER + Blockly.Yail.YAIL_QUOTE + propertyName +
     Blockly.Yail.YAIL_SPACER;
@@ -430,8 +429,6 @@ Blockly.Yail.getPropertySetterString = function(componentName, componentType, pr
     componentDb.getPropertyForType(componentType, propertyName).type;
   var value = Blockly.Yail.getPropertyValueString(propertyValue, propType);
   code = code.concat(value + Blockly.Yail.YAIL_SPACER + propType + Blockly.Yail.YAIL_CLOSE_BLOCK);
-  console.log("hossein: code is:" + code);
-  console.log("hossein: value is:" + value);
   return code;
 };
 
