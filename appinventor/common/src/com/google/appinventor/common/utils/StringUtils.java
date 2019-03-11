@@ -146,6 +146,27 @@ public final class StringUtils {
   }
 
   /**
+   * Joins a list of strings into a single string using a delimiter, with the
+   * output being directed into a StringBuilder object.
+   *
+   * @param sb The StringBuilder to receive the resulting string
+   * @param delimiter The delimiter to use between strings
+   * @param items The items to join
+   */
+  public static void join(StringBuilder sb, String delimiter, String... items) {
+    Preconditions.checkNotNull(sb);
+    Preconditions.checkNotNull(delimiter);
+    Preconditions.checkNotNull(items);
+
+    String separator = "";
+    for (String string : items) {
+      sb.append(separator);
+      sb.append(string);
+      separator = delimiter;
+    }
+  }
+
+  /**
    * Returns a semi-unique legal package name for a user.
    *
    * @param email the user's email address

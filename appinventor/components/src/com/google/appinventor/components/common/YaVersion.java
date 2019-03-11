@@ -404,7 +404,10 @@ public class YaVersion {
   // For YOUNG_ANDROID_VERSION 170: MAP_COMPONENT_VERSION was incremented to 4
   // For YOUNG_ANDROID_VERSION 171: FUSIONTABLESCONTROL_COMPONENT_VERSION was incremented to 4
   // for YOUNG_ANDROID_VERSION 172: FORM_COMPONENT_VERSION was incremented to 24
-  public static final int YOUNG_ANDROID_VERSION = 173;
+  // For YOUNG_ANDROID_VERSION 174:
+  // - PHONECALL_COMPONENT_VERSION was incremented to 3
+  // - TEXTING_COMPONENT_VERSION was incremented to 4
+  public static final int YOUNG_ANDROID_VERSION = 174;
 
   // ............................... Blocks Language Version Number ...............................
 
@@ -909,7 +912,10 @@ public class YaVersion {
   // - The PhoneCallStarted event was added.
   // - The PhoneCallEnded event was added.
   // - The IncomingCallAnswered event was added.
-  public static final int PHONECALL_COMPONENT_VERSION = 2;
+  // For PHONECALL_COMPONENT_VERSION 3:
+  // - The MakePhoneCall method was renamed to MakePhoneCallDirect
+  // - The MakePhoneCall method was added
+  public static final int PHONECALL_COMPONENT_VERSION = 3;
 
   // For PHONENUMBERPICKER_COMPONENT_VERSION 2:
   // - The Alignment property was renamed to TextAlignment.
@@ -985,7 +991,12 @@ public class YaVersion {
   // For TEXTING_COMPONENT_VERISON 3:
   // - receivingEnabled is now an integer in the range 1-3
   //   instead of a boolean
-  public static final int TEXTING_COMPONENT_VERSION = 3;
+  // For TEXTING_COMPONENT_VERSION 4:
+  // - The SendMessage method was renamed to SendMessageDirect and given
+  //   conditional permissions
+  // - The SendMessage method was added
+  // - The ReceivingEnabled method was given conditional permissions
+  public static final int TEXTING_COMPONENT_VERSION = 4;
 
   // For TEXTTOSPEECH_COMPONENT_VERSION 2:
   // - added speech pitch and rate

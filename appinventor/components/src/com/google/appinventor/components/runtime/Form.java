@@ -15,7 +15,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import android.Manifest;
 import android.app.ActionBar;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 
@@ -30,7 +32,9 @@ import android.text.SpannableString;
 import android.view.*;
 import android.widget.*;
 import com.appybuilder.iab.v3.Constants;
+import com.google.appinventor.common.version.AppInventorFeatures;
 import com.google.appinventor.components.annotations.*;
+import com.google.appinventor.components.runtime.errors.PermissionException;
 import com.google.appinventor.components.runtime.util.*;
 import org.json.JSONException;
 import com.appybuilder.iab.v3.BillingProcessor;
@@ -61,7 +65,9 @@ import com.google.appinventor.components.runtime.collect.Lists;
 import com.google.appinventor.components.runtime.collect.Maps;
 import com.google.appinventor.components.runtime.collect.Sets;
 import com.google.appinventor.components.runtime.multidex.MultiDex;
-
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 /**
  * Component underlying activities and UI apps, not directly accessible to Simple programmers.
  *
@@ -161,8 +167,11 @@ public class Form extends Activity
     private static boolean sCompatibilityMode;
     private static boolean showListsAsJson = false;
 
+    private final Set<String> permissions = new HashSet<String>();
+
     // Application lifecycle related fields
     private final HashMap<Integer, ActivityResultListener> activityResultMap = Maps.newHashMap();
+  private final Map<Integer, Set<ActivityResultListener>> activityResultMultiMap = Maps.newHashMap();
     private final Set<OnStopListener> onStopListeners = Sets.newHashSet();
     private final Set<OnClearListener> onClearListeners = Sets.newHashSet();
     private final Set<OnNewIntentListener> onNewIntentListeners = Sets.newHashSet();
@@ -336,6 +345,44 @@ public class Form extends Activity
             progress.dismiss();
         }
 
+        populatePermissions();
+
+    // Check to see if we need to ask for WRITE_EXTERNAL_STORAGE
+    // permission.  We look at the application manifest to see if it
+    // is declared there. If it is, then we need to ask the user to
+    // approve it here. Otherwise we don't need to and we can
+    // continue. Because the asking process is asynchronous
+    // we have to have yet another continuation of the onCreate
+    // process (onCreateFinish2). Sigh.
+
+    boolean needSdcardWrite = doesAppDeclarePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
+        // Don't ask permission if we are REPL and using the splash screen
+        !(isRepl() && AppInventorFeatures.doCompanionSplashScreen());
+    if (needSdcardWrite) {
+      askPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        new PermissionResultHandler() {
+          @Override
+          public void HandlePermissionResponse(String permission, boolean granted) {
+            if (granted) {
+              onCreateFinish2();
+            } else {
+              Log.i(LOG_TAG, "WRITE_EXTERNAL_STORAGE Permission denied by user");
+              onCreateFinish2();
+              androidUIHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                  PermissionDenied(Form.this, "Initialize", Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+              });
+            }
+          }
+        });
+    } else {
+      onCreateFinish2();
+    }
+  }
+
+  private void onCreateFinish2() {
         defaultPropertyValues();
 
         // Get startup text if any before adding components
@@ -364,6 +411,19 @@ public class Form extends Activity
         // before initialization finishes. Instead the compiler suppresses the invocation of the
         // event and leaves it up to the library implementation.
         Initialize();
+    }
+
+    /**
+     * Builds a set of permissions requested by the app from the package manifest.
+     */
+    private void populatePermissions() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(),
+                    PackageManager.GET_PERMISSIONS);
+            Collections.addAll(permissions, packageInfo.requestedPermissions);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Exception while attempting to learn permissions.", e);
+        }
     }
 
     /**
@@ -563,6 +623,13 @@ public class Form extends Activity
             if (component != null) {
                 component.resultReturned(requestCode, resultCode, data);
             }
+          // Many components are interested in this request (e.g., Texting, PhoneCall)
+          Set<ActivityResultListener> listeners = activityResultMultiMap.get(requestCode);
+          if (listeners != null) {
+            for (ActivityResultListener listener : listeners.toArray(new ActivityResultListener[0])) {
+              listener.resultReturned(requestCode, resultCode, data);
+            }
+          }
         }
     }
 
@@ -589,6 +656,22 @@ public class Form extends Activity
         return requestCode;
     }
 
+  /**
+   * Register a {@code listener} for the given {@code requestCode}. This is used to simulate
+   * broadcast receivers as a workaround for PhoneCall and Texting handlers related to initiating
+   * calls/messages.
+   *
+   * @param listener The object to report activity results to for the given request code
+   */
+  public void registerForActivityResult(ActivityResultListener listener, int requestCode) {
+    Set<ActivityResultListener> listeners = activityResultMultiMap.get(requestCode);
+    if (listeners == null) {
+      listeners = Sets.newHashSet();
+      activityResultMultiMap.put(requestCode, listeners);
+    }
+    listeners.add(listener);
+  }
+
     public void unregisterForActivityResult(ActivityResultListener listener) {
         List<Integer> keysToDelete = Lists.newArrayList();
         for (Map.Entry<Integer, ActivityResultListener> mapEntry : activityResultMap.entrySet()) {
@@ -599,6 +682,17 @@ public class Form extends Activity
         for (Integer key : keysToDelete) {
             activityResultMap.remove(key);
         }
+
+    // Remove any simulated broadcast receivers
+    Iterator<Map.Entry<Integer, Set<ActivityResultListener>>> it =
+        activityResultMultiMap.entrySet().iterator();
+    while (it.hasNext()) {
+      Map.Entry<Integer, Set<ActivityResultListener>> entry = it.next();
+      entry.getValue().remove(listener);
+      if (entry.getValue().size() == 0) {
+        it.remove();
+      }
+    }
     }
 
     void ReplayFormOrientation() {
@@ -876,6 +970,37 @@ public class Form extends Activity
         }
     }
 
+    /**
+     * Schedules a run of the PermissionDenied event handler for after the current stack of blocks finishes executing
+     * on the UI thread.
+     *
+     * @param component The component that needs the denied permission.
+     * @param functionName The function that triggers the denied permission.
+     * @param exception The PermissionDenied exception
+     */
+    public void dispatchPermissionDeniedEvent(final Component component, final String functionName,
+                                              final PermissionException exception) {
+        exception.printStackTrace();
+        dispatchPermissionDeniedEvent(component, functionName, exception.getPermissionNeeded());
+    }
+
+  /**
+   * Schedules a run of the PermissionDenied event handler for after the current stack of blocks finishes executing
+   * on the UI thread.
+   *
+   * @param component The component that needs the denied permission.
+   * @param functionName The function that triggers the denied permission.
+   * @param permissionName The name of the needed permission.
+   */
+  public void dispatchPermissionDeniedEvent(final Component component, final String functionName,
+      final String permissionName) {
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        PermissionDenied(component, functionName, permissionName);
+      }
+    });
+  }
 
     public void dispatchErrorOccurredEvent(final Component component, final String functionName,
                                            final int errorNumber, final Object... messageArgs) {
@@ -920,6 +1045,60 @@ public class Form extends Activity
         Log.d("FORM_RUNTIME_ERROR", "message is " + message);
         dispatchErrorOccurredEvent((Component) activeForm, functionName, errorNumber, message);
     }
+
+  /**
+   * Event to handle when the app user has denied a needed permission.
+   *
+   * @param component The component that needs the denied permission.
+   * @param functionName The property or method of the component that needs the denied permission.
+   * @param permissionName The name of the permission that has been denied by the user.
+   */
+  @SimpleEvent
+  public void PermissionDenied(Component component, String functionName, String permissionName) {
+    if (permissionName.startsWith("android.permission.")) {
+      // Forward compatibility with iOS so that we don't have to pass around Android-specific names
+      permissionName = permissionName.replace("android.permission.", "");
+    }
+    if (!EventDispatcher.dispatchEvent(this, "PermissionDenied", component, functionName, permissionName)) {
+      dispatchErrorOccurredEvent(component, functionName, ErrorMessages.ERROR_PERMISSION_DENIED, permissionName);
+    }
+  }
+
+  /**
+   * Event to handle when the app user has granted a needed permission. This event is only run when permission is
+   * granted in response to the AskForPermission method.
+   *
+   * @param permissionName The name of the permission that was granted by the user.
+   */
+  @SimpleEvent
+  public void PermissionGranted(String permissionName) {
+    if (permissionName.startsWith("android.permission.")) {
+      // Forward compatibility with iOS so that we don't have to pass around Android-specific names
+      permissionName = permissionName.replace("android.permission.", "");
+    }
+    EventDispatcher.dispatchEvent(this, "PermissionGranted", permissionName);
+  }
+
+  /**
+   * Ask the user to grant access to a dangerous permission.
+   * @param permissionName The name of the permission to request from the user.
+   */
+  @SimpleFunction
+  public void AskForPermission(String permissionName) {
+    if (!permissionName.contains(".")) {
+      permissionName = "android.permission." + permissionName;
+    }
+    askPermission(permissionName, new PermissionResultHandler() {
+      @Override
+      public void HandlePermissionResponse(String permission, boolean granted) {
+        if (granted) {
+          PermissionGranted(permission);
+        } else {
+          PermissionDenied(Form.this, "RequestPermission", permission);
+        }
+      }
+    });
+  }
 
     /**
      * Scrollable property getter method.
@@ -2629,6 +2808,18 @@ public class Form extends Activity
                     " requestCode = " + requestCode);
         }
         permissionHandlers.remove(requestCode);
+    }
+
+    /**
+     * Tests whether the app declares the given permission.
+     *
+     * @param permissionName The name of the permission to test.
+     * @see android.Manifest.permission
+     * @return True if the permission is declared in the manifest, otherwise false.
+     */
+    @SuppressWarnings("WeakerAccess")  // May be used by extensions
+    public boolean doesAppDeclarePermission(String permissionName) {
+        return permissions.contains(permissionName);
     }
 
     @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_MIN_API_LEVEL_OPTIONS, defaultValue = "14")

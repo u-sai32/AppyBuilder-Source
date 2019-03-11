@@ -2112,7 +2112,9 @@ Blockly.Versioning.AllUpgradeMaps =
     // AI2: - The PhoneCallStarted event was added.
     // - The PhoneCallEnded event was added.
     // - The IncomingCallAnswered event was added.
-    2: "noUpgrade"
+    2: "noUpgrade",
+
+    3: 'noUpgrade'
 
   }, // End PhoneCall upgraders
 
@@ -2379,7 +2381,9 @@ Blockly.Versioning.AllUpgradeMaps =
     /* From BlockSaveFile.java:
       handlePropertyTypeChange(componentName, "ReceivingEnabled", "receivingEnabled is now an integer in the range 1-3 instead of a boolean");
     */
-    3: "ai1CantDoUpgrade" // Just indicates we couldn't do upgrade even if we wanted to
+    3: "ai1CantDoUpgrade", // Just indicates we couldn't do upgrade even if we wanted to
+
+    4: 'noUpgrade'
 
   }, // End Texting
 
