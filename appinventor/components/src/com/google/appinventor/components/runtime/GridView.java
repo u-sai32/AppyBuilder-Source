@@ -76,10 +76,6 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
 
         view.setOnItemClickListener(this);
 
-        //TODO: What should be the stretchMode for columnWidth
-//        view.setStretchMode();
-
-//        view.setAdapter(adapter);
         container.$add(this);
     }
 
@@ -200,9 +196,7 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
         try {
             backgroundImageDrawable = MediaUtil.getBitmapDrawable(container.$form(), imagePath);
             updateAppearance();
-//            view.setBackground(backgroundImageDrawable);
         } catch (IOException ioe) {
-            // TODO(user): Maybe raise Form.ErrorOccurred.
             Log.e(TAG, "Unable to load " + imagePath);
             // Fall through with a value of null for backgroundImageDrawable.
         }

@@ -30,7 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 @DesignerComponent(version = YaVersion.SPREADSHEET_COMPONENT_VERSION,
-        description = "Non-visible blah blah blah",
+        description = "Non-visible - update message in OdeMessage",
         category = ComponentCategory.STORAGE,
         nonVisible = true,
         iconName = "images/spreadsheet.png")

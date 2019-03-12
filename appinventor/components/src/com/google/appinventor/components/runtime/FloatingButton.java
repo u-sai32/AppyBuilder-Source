@@ -229,15 +229,6 @@ public class FloatingButton extends AndroidNonvisibleComponent implements Compon
   public void MarginRight(int marginRight) {
     this.marginRight = marginRight;
     fabButton = fabButton.withMargins(marginLeft, marginTop, marginRight, marginBottom);
-//      view.invalidate(); // force redraw
-
-    if (true) return;
-
-    if (rootViewGroup != null) {
-      Log.e(LOG_TAG, "Removing view for MarginRight");
-      rootViewGroup.removeView(view);
-    }
-
   }
 
   @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_NON_NEGATIVE_INTEGER, defaultValue = "16")
@@ -245,15 +236,6 @@ public class FloatingButton extends AndroidNonvisibleComponent implements Compon
   public void MarginBottom(int marginBottom) {
     this.marginBottom = marginBottom;
     fabButton = fabButton.withMargins(marginLeft, marginTop, marginRight, marginBottom);
-//    view.invalidate(); // force redraw
-
-    if (true) return;
-
-    if (rootViewGroup != null) {
-      Log.e(LOG_TAG, "Removing view for MarginBottom");
-      rootViewGroup.removeView(view);
-    }
-
   }
 
 
