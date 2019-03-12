@@ -3,7 +3,7 @@
 // https://www.gnu.org/licenses/gpl-3.0.en.html
 
 // Copyright 2009-2011 Google, All Rights reserved
-// Copyright 2011-2012 MIT, All rights reserved
+// Copyright 2011-2017 MIT, All rights reserved
 // Released under the Apache License, Version 2.0
 // http://www.apache.org/licenses/LICENSE-2.0
 
@@ -63,10 +63,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -237,10 +234,6 @@ public final class YoungAndroidProjectService extends CommonProjectService {
     String appName = tokens[tokens.length - 2];
     final int lastDotPos = qualifiedName.lastIndexOf('.');
 
-    //hossein: packageName. for appinventor.ai_kkashi01.AppName.FormName, get the 2rd element
-    //hossein: packageName. for com.appybuilder.kkashi01.AppName.FormName, get the 3th element
-//    String appName = qualifiedName.split("\\.")[2];     // for appinventor.ai_kkashi01.SomeAppName
-//    String appName = qualifiedName.split("\\.")[3];     // for com.appybuilder.kkashi01.SomeAppName
 //      String formName = qualifiedName.substring(lastDotPos + 1);
     // The initial Uuid is set to zero here since (as far as we know) we can't get random numbers
     // in ode.shared.  This shouldn't actually matter since all Uuid's are random int's anyway (and
@@ -730,30 +723,10 @@ public final class YoungAndroidProjectService extends CommonProjectService {
             projectId,
             outputFileDir));
 
-//      try (BufferedInputStream in = new BufferedInputStream(new URL(buildServerUrl).openStream());
-//           FileOutputStream fileOutputStream new FileOutputStream(FILE_NAME)) {
-//        byte dataBuffer[] = new byte[1024];
-//        int bytesRead;
-//        while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-//          fileOutputStream.write(dataBuffer, 0, bytesRead);
-//        }
-//      } catch (IOException e) {
-//        // handle exception
-//      }
-
       HttpURLConnection connection = (HttpURLConnection) buildServerUrl.openConnection();
-//      connection.setRequestMethod("PUT");
-//      OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-//      writer.write(URLEncoder.encode(jsonObj.toString(), "UTF-8"));
-//      writer.close();
-
-//      urlConnection.addRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundaryString);
-
-//      connection.setConnectTimeout(2000);
       connection.setUseCaches(false);
       connection.setChunkedStreamingMode(1024);
       connection.setRequestProperty("Connection", "Keep-Alive");
-//      connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + BOUNDARY);
 
         connection.setDoOutput(true);
       connection.setRequestMethod("POST");
@@ -854,116 +827,6 @@ public final class YoungAndroidProjectService extends CommonProjectService {
     return new RpcResult(true, "Building " + projectName, "");
   }
 
-  // This was an attemp to chunk and overcome the 10mb. However, now checking beforehand to ensure that
-  // aia is not over 20mb. Also, we are now using java8 in appengine web and native that allows for building larger files
-  private String sendFileToServer(String filename, String targetUrl) {
-    String response = "error";
-    LOG.info("Image filename" + filename);
-    LOG.info("url:" + targetUrl);
-    HttpURLConnection connection = null;
-    DataOutputStream outputStream = null;
-    // DataInputStream inputStream = null;
-
-    String pathToOurFile = filename;
-    String urlServer = targetUrl;
-    String lineEnd = "\r\n";
-    String twoHyphens = "--";
-    String boundary = "*****";
-    DateFormat df = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
-
-    int bytesRead, bytesAvailable, bufferSize;
-    byte[] buffer;
-    int maxBufferSize = 1 * 1024;
-    try {
-      FileInputStream fileInputStream = new FileInputStream(new File(pathToOurFile));
-
-      URL url = new URL(urlServer);
-      connection = (HttpURLConnection) url.openConnection();
-
-      // Allow Inputs & Outputs
-      connection.setDoInput(true);
-      connection.setDoOutput(true);
-      connection.setUseCaches(false);
-      connection.setChunkedStreamingMode(1024);
-      // Enable POST method
-      connection.setRequestMethod("POST");
-
-      connection.setRequestProperty("Connection", "Keep-Alive");
-      connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-
-      outputStream = new DataOutputStream(connection.getOutputStream());
-      outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-
-      String connstr = null;
-      connstr = "Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + pathToOurFile + "\"" + lineEnd;
-      LOG.info("Connstr: " +  connstr);
-
-      outputStream.writeBytes(connstr);
-      outputStream.writeBytes(lineEnd);
-
-      bytesAvailable = fileInputStream.available();
-      bufferSize = Math.min(bytesAvailable, maxBufferSize);
-      buffer = new byte[bufferSize];
-
-      // Read file
-      bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-      LOG.info("Image length:" + bytesAvailable + "");
-      try {
-        while (bytesRead > 0) {
-          try {
-            outputStream.write(buffer, 0, bufferSize);
-          } catch (OutOfMemoryError e) {
-            e.printStackTrace();
-            response = "outofmemoryerror";
-            return response;
-          }
-          bytesAvailable = fileInputStream.available();
-          bufferSize = Math.min(bytesAvailable, maxBufferSize);
-          bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-        response = "error";
-        return response;
-      }
-      outputStream.writeBytes(lineEnd);
-      outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-      // Responses from the server (code and message)
-      int serverResponseCode = connection.getResponseCode();
-      String serverResponseMessage = connection.getResponseMessage();
-      LOG.info("Server Response Code " + serverResponseCode);
-      LOG.info("Server Response Message: " + serverResponseMessage);
-
-      if (serverResponseCode == 200) {
-        response = "true";
-      }
-
-      String CDate = null;
-      Date serverTime = new Date(connection.getDate());
-      try {
-        CDate = df.format(serverTime);
-      } catch (Exception e) {
-        e.printStackTrace();
-        LOG.info("Date Exception" +  e.getMessage() + " Parse Exception");
-      }
-      LOG.info("Server Response Time:" + CDate + "");
-
-      filename = CDate + filename.substring(filename.lastIndexOf("."), filename.length());
-      LOG.info("File Name in Server : " +  filename);
-
-      fileInputStream.close();
-      outputStream.flush();
-      outputStream.close();
-      outputStream = null;
-    } catch (Exception ex) {
-      // Exception handling
-      response = "error";
-      LOG.info("Send file Exception: " + ex.getMessage() + "");
-      ex.printStackTrace();
-    }
-    return response;
-  }
 
   private String buildErrorMsg(String exceptionName, URL buildURL, String userId, long projectId) {
     return "Request to build failed with " + exceptionName + ", user=" + userId

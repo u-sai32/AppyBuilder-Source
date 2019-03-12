@@ -383,12 +383,29 @@ Blockly.Yail.getFormPropertiesLines = function(formName, componentJson, includeC
  */
 Blockly.Yail.getPropertySettersLines = function(componentJson, componentName, componentDb) {
   var code = [];
-  for (var prop in componentJson) {
-    if (prop.charAt(0) != "$" && prop != "Uuid" && prop != "TutorialURL") {
-      code.push(Blockly.Yail.getPropertySetterString(componentName, componentJson.$Type, prop, 
-        componentJson[prop], componentDb));
+  var type = componentDb.getType(componentJson['$Type']);
+  function shouldSendProperty(prop, info) {
+    return (prop.charAt(0) !== '$' && prop !== 'Uuid' && prop !== 'TutorialURL') ||
+      (info && info['alwaysSend']);
+  }
+  // Gather all of the properties together
+  var propsToSend = Object.keys(componentJson);
+  for (var prop in type['properties']) {
+    var property = type['properties'][prop];
+    if (property['alwaysSend'] && !(prop in componentJson)) {
+      propsToSend.push(property['name']);
     }
   }
+  // Keep ordering so default properties will still be sent in the right position.
+  propsToSend.sort();
+  // Construct the code
+  propsToSend.forEach(function(prop) {
+    var info = type['properties'][prop];
+    if (shouldSendProperty(prop, info)) {
+      code.push(Blockly.Yail.getPropertySetterString(componentName, componentJson['$Type'], prop,
+        componentJson[prop] || info['defaultValue'], componentDb));
+    }
+  });
   return code;
 };
 
@@ -405,8 +422,8 @@ Blockly.Yail.getPropertySettersLines = function(componentJson, componentName, co
  */
 Blockly.Yail.getPropertySetterString = function(componentName, componentType, propertyName, 
     propertyValue, componentDb) {
-  var code = Blockly.Yail.YAIL_SET_AND_COERCE_PROPERTY + Blockly.Yail.YAIL_QUOTE + 
-    componentName + Blockly.Yail.YAIL_SPACER + Blockly.Yail.YAIL_QUOTE + propertyName + 
+  var code = Blockly.Yail.YAIL_SET_AND_COERCE_PROPERTY + Blockly.Yail.YAIL_QUOTE +
+    componentName + Blockly.Yail.YAIL_SPACER + Blockly.Yail.YAIL_QUOTE + propertyName +
     Blockly.Yail.YAIL_SPACER;
   var propType = Blockly.Yail.YAIL_QUOTE +
     componentDb.getPropertyForType(componentType, propertyName).type;

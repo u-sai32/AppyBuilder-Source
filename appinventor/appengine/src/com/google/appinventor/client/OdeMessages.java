@@ -4501,6 +4501,22 @@ public interface OdeMessages extends Messages {
   @Description("")
   String OtherScreenClosedEvents();
 
+  @DefaultMessage("PermissionDenied")
+  @Description("The name of the event handler for when the app is denied a dangerous permission by the user.")
+  String PermissionDeniedEvents();
+
+  @DefaultMessage("PermissionGranted")
+  @Description("The name of the event handler for when the app is granted a dangerous permission by the user.")
+  String PermissionGrantedEvents();
+
+  @DefaultMessage("AskForPermission")
+  @Description("")
+  String AskForPermissionMethods();
+
+  @DefaultMessage("permissionName")
+  @Description("The name of the parameter that is used to report the name of a needed permission.")
+  String permissionNameParams();
+
   @DefaultMessage("ScreenOrientationChanged")
   @Description("")
   String ScreenOrientationChangedEvents();
@@ -5364,6 +5380,10 @@ public interface OdeMessages extends Messages {
   @Description("")
   String MakePhoneCallMethods();
 
+  @DefaultMessage("MakePhoneCallDirect")
+  @Description("")
+  String MakePhoneCallDirectMethods();
+
   @DefaultMessage("GetWifiIpAddress")
   @Description("")
   String GetWifiIpAddressMethods();
@@ -5399,6 +5419,10 @@ public interface OdeMessages extends Messages {
   @DefaultMessage("SendMessage")
   @Description("")
   String SendMessageMethods();
+
+  @DefaultMessage("SendMessageDirect")
+  @Description("")
+  String SendMessageDirectMethods();
 
   @DefaultMessage("GetValue")
   @Description("")

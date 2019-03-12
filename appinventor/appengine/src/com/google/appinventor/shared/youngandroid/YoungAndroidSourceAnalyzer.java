@@ -60,6 +60,7 @@ public class YoungAndroidSourceAnalyzer {
    * @return the properties as a JSONObject
    */
   public static JSONObject parseSourceFile(String source, JSONParser jsonParser) {
+    source = source.replaceAll("\r\n", "\n");
     // First, locate the beginning of the $JSON section.
     // Older files have a $Properties before the $JSON section and we need to make sure we skip
     // that.
