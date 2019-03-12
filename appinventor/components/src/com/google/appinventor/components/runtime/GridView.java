@@ -1,8 +1,5 @@
 package com.google.appinventor.components.runtime;
 
-//todo: Check this: https://www.learn2crack.com/2014/01/android-custom-gridview.html
-// https://www.learn2crack.com/2014/01/android-custom-gridview.html
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -59,7 +56,7 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
 //        view.setColumnWidth(4);
         defaultBackgroundDrawable = getView().getBackground();
 
-        view.setLayoutParams(new android.widget.GridView.LayoutParams(
+        view.setLayoutParams(new GridView.LayoutParams(
                 android.widget.LinearLayout.LayoutParams.FILL_PARENT,
                 android.widget.LinearLayout.LayoutParams.FILL_PARENT));
 //        view.setBackgroundColor(COLOR_LTGRAY);
@@ -168,10 +165,6 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
 //        view.requestLayout();
     }
 
-
-    //todo: read this: http://stackoverflow.com/questions/10792258/android-scrolling-background-in-gallery
-    //todo: It would be good idea to allow user specify a folder to automatically load all files (with some extension
-    //todo:     regex (e.g. *.png) so that we load all those elements.
 
     /**
      * Used to specify number of spaces between elements
@@ -428,7 +421,7 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
             try {
                 if (isImage) {
                     iv.setImageDrawable(MediaUtil.getBitmapDrawable(container.$form(), elements[index]));
-                    iv.setLayoutParams(new android.widget.GridView.LayoutParams(width, height));
+                    iv.setLayoutParams(new GridView.LayoutParams(width, height));
                     iv.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv.setBackgroundResource(imageBackground);
                     iv.setPadding(padding, padding, padding, padding);
@@ -438,7 +431,7 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
                     textView.setText(elements[index]);
                     textView.setTextSize(fontSize);
                     textView.setTextColor(textColor);
-                    textView.setLayoutParams(new android.widget.GridView.LayoutParams(width, height));
+                    textView.setLayoutParams(new GridView.LayoutParams(width, height));
                     textView.setBackgroundResource(imageBackground);
                     textView.setPadding(padding, padding, padding, padding);
 

@@ -129,8 +129,6 @@ public class KitchenSink extends AndroidNonvisibleComponent implements Component
     @SimpleProperty(description = "Allows you to programatically show or hide the keyboard")
     public void HideSoftKeyboard(boolean enabled)
     {
-        //input.setRawInputType(Configuration.KEYBOARD_12KEY);  this will only show numbers. How switch back &forth
-        // to alpha? Also needs update for handling existing apps -- todo: setup in next release
         InputMethodManager imm = (InputMethodManager) form.getSystemService(INPUT_METHOD_SERVICE);
 
         if (enabled) {

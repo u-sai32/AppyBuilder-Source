@@ -117,8 +117,6 @@ public class LightSensor extends AndroidNonvisibleComponent
     }
 
     /**
-     * todo: add comment here. Do we need this method at all?? This was taken from proximity sensor
-     *
      * @return Sensor's maximum range.
      */
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
