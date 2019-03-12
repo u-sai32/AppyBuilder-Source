@@ -158,7 +158,7 @@ public class GalleryViewer extends AndroidViewComponent implements AdapterView.O
     }
 
     /**
-     * todo: blah blah blah
+     * Triggered after an image is selected
      */
     @SimpleEvent(description = "Triggered after an image is selected. It will also report selected image name")
     public void AfterPicking(String imageName) {

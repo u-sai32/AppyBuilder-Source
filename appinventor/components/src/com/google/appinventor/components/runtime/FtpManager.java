@@ -117,7 +117,6 @@ public class FtpManager extends AndroidNonvisibleComponent implements Component 
         this.serverPassword = serverPassword;
     }
 
-//    @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Connects to FTP server. You should have already set ServerURL, ServerUserId, ServerPassword. ")
     private boolean connectToFTPServer() {
         Log.d(LOG_TAG, String.format("Starting connectToFTPServer to %s for user %s", serverURL, serverUserId));
 
@@ -335,6 +334,7 @@ public class FtpManager extends AndroidNonvisibleComponent implements Component 
     }
 
     private String getFullPath(String thePath) {
+        // For now, short-circuting
         if (true)   return Environment.getExternalStorageDirectory().getPath();
 
         if (thePath.startsWith("/")) {
@@ -486,18 +486,6 @@ public class FtpManager extends AndroidNonvisibleComponent implements Component 
         }
     }
 
-    /**
-     * Checks to see if newDir exists or not
-     * @param currentFolder
-     * @param newDir
-     * @return
-     * @throws IOException
-     */
-    private boolean checkDirectoryExists(final String currentFolder, final String newDir) throws IOException {
-        boolean doesDirExists = ftpClient.changeWorkingDirectory(newDir);
-        ftpClient.changeWorkingDirectory(currentFolder);
-        return doesDirExists;
-    }
     private void asyncDownload(String remotePath, String remoteFile, String localPath) {
         Log.d(LOG_TAG, "starting the Download method");
 
@@ -580,11 +568,6 @@ public class FtpManager extends AndroidNonvisibleComponent implements Component 
                 if (filesDownloaded.startsWith(",")) filesDownloaded = filesDownloaded.substring(1);
                 if (filesNotDownloaded.startsWith(",")) filesNotDownloaded = filesNotDownloaded.substring(1);
 
-                // For now, let's forget about this
-                /*if (!filesNotDownloaded.equals("")) {
-                    FtpTransferError(String.format("Remote files not received: %s. Remote path: %s", filesNotDownloaded, remotePath));
-                }*/
-
                 if (!filesDownloaded.equals("")) {
                     AfterAction(true, filesDownloaded, "Download");
                 }
@@ -607,7 +590,6 @@ public class FtpManager extends AndroidNonvisibleComponent implements Component 
                 } else {
                     AfterAction(false, String.format("Unable to download remote file %s from remote path %s to local path %s", remoteFile, remotePath, filepath), "Download");
                 }
-//                Log.e(LOG_TAG, "retrieved: " + remoteFile);
             }
 
         } catch (Exception ex) {

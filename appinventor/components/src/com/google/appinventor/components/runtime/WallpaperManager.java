@@ -13,7 +13,6 @@ import com.google.appinventor.components.annotations.*;
 import com.google.appinventor.components.common.ComponentCategory;
 import com.google.appinventor.components.common.YaVersion;
 import com.google.appinventor.components.runtime.util.AsynchUtil;
-import com.google.appinventor.components.runtime.util.MediaUtil;
 import com.squareup.picasso.Picasso;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +22,7 @@ import java.io.IOException;
  *
  */
 @DesignerComponent(version = YaVersion.WALLPAPER_COMPONENT_VERSION,
-        description = "Non-visible blah blah blah",
+        description = "Non-visible - update message in OdeMessage",
         category = ComponentCategory.MEDIA,
         nonVisible = true,
         iconName = "images/wallpaper.png")
@@ -66,31 +65,6 @@ public class WallpaperManager extends AndroidNonvisibleComponent implements Comp
             }
         });
 
-        if (true) return;
-        Drawable drawable;
-        try {
-            android.app.WallpaperManager myWallpaperManager = android.app.WallpaperManager.getInstance(context);
-
-            if (path.toLowerCase().startsWith("http") ) {
-                AsynchUtil.runAsynchronously(new Runnable() {
-                    @Override
-                    public void run() {
-                        asyncSetWallpaper(finalPath);
-                    }
-                });
-            } else {
-                drawable = MediaUtil.getBitmapDrawable(container.$form(), path);
-                // convert drawable to bitmap
-                Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-
-                myWallpaperManager.setBitmap(bitmap);
-                AfterAction(true, "Wallpaper set", "SetWallpaper");
-
-            }
-
-        } catch (IOException e) {
-            AfterAction(false, "Unable to set wallpaper" + e.getMessage(), "SetWallpaper");
-        }
     }
 
     private void asyncSetWallpaper(String path) {
@@ -109,11 +83,6 @@ public class WallpaperManager extends AndroidNonvisibleComponent implements Comp
                 } else {
                     path = "android_asset/" + path.substring(2);
                 }
-//                String temp = "android_asset/";
-//
-//                if (form instanceof ReplForm) {
-//                    temp = Environment.getExternalStorageDirectory().getPath() + "/AppInventor/data/";
-//                }
                 mybitmap = Picasso.with(context).load("file:///" + path).get(); // + path.substring(2)).get();
                 myWallpaperManager.setBitmap(mybitmap);
                 AfterAction(true, "Wallpaper set", "SetWallpaper");

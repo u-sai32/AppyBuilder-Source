@@ -591,9 +591,6 @@ public class BuildServer {
   }
 
   private void cleanUp() {
-    // for debug, we don't want to clean-up so that we can see the generated aapt files.
-    // For this to work, you'll need to see the comment in compiler. searchKeyAAPT
-    //    if (true) return;
     if (inputZip != null) {
       inputZip.delete();
     }

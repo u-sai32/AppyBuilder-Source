@@ -14,7 +14,7 @@ import com.google.appinventor.components.runtime.util.YailList;
 import java.util.LinkedList;
 
 @DesignerComponent(version = YaVersion.XYCHART_COMPONENT_VERSION,
-        description = "XYChart component allows you blah blah blah blah blah",
+        description = "XYChart component -- update message on OdeMessage",
         category = ComponentCategory.VISUALIZATION)
 @SimpleObject
 @UsesLibraries(libraries = "Androidplot-core-0.5.0-release.jar")

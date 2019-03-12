@@ -58,16 +58,6 @@ final class BeepManager {
     }
   }
 
-  private static boolean shouldBeep(SharedPreferences prefs, Context activity) {
-    if (true) {
-      // See if sound settings overrides this
-      AudioManager audioService = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
-      // if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-      //   shouldPlayBeep = false;
-      // }
-    }
-    return false;
-  }
 
   private static MediaPlayer buildMediaPlayer(Context activity) {
     // MediaPlayer mediaPlayer = new MediaPlayer();
