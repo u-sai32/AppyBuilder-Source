@@ -56,7 +56,7 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
 //        view.setColumnWidth(4);
         defaultBackgroundDrawable = getView().getBackground();
 
-        view.setLayoutParams(new GridView.LayoutParams(
+        view.setLayoutParams(new android.widget.GridView.LayoutParams(
                 android.widget.LinearLayout.LayoutParams.FILL_PARENT,
                 android.widget.LinearLayout.LayoutParams.FILL_PARENT));
 //        view.setBackgroundColor(COLOR_LTGRAY);
@@ -421,7 +421,7 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
             try {
                 if (isImage) {
                     iv.setImageDrawable(MediaUtil.getBitmapDrawable(container.$form(), elements[index]));
-                    iv.setLayoutParams(new GridView.LayoutParams(width, height));
+                    iv.setLayoutParams(new android.widget.GridView.LayoutParams(width, height));
                     iv.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv.setBackgroundResource(imageBackground);
                     iv.setPadding(padding, padding, padding, padding);
@@ -431,7 +431,7 @@ public class GridView extends AndroidViewComponent implements AdapterView.OnItem
                     textView.setText(elements[index]);
                     textView.setTextSize(fontSize);
                     textView.setTextColor(textColor);
-                    textView.setLayoutParams(new GridView.LayoutParams(width, height));
+                    textView.setLayoutParams(new android.widget.GridView.LayoutParams(width, height));
                     textView.setBackgroundResource(imageBackground);
                     textView.setPadding(padding, padding, padding, padding);
 
