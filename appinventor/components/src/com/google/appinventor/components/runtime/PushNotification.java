@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -374,7 +375,8 @@ public class PushNotification extends AndroidNonvisibleComponent implements Comp
             java.util.Collections.sort(keyList);
             return keyList;
         }
-
+        private String CHANNEL_ID = "PushNotification_Channel";// The id of the channel.
+        private Notification notification = null;
         private void postNotif(String notifMsg) {
             String msg[] = notifMsg.split("=");
             pushTitle = "Notification"; //a default notification title
@@ -403,28 +405,45 @@ public class PushNotification extends AndroidNonvisibleComponent implements Comp
 
             mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             int icon = getApplicationInfo().icon;
-//            Notification notification = new Notification(icon, "Firebase" + Math.random(), System.currentTimeMillis());
-            Notification notification = new Notification();
-            notification.icon = icon;
+            //Notification notification = new Notification();
 
-
-            //adding LED lights to notification
-            notification.defaults |= Notification.DEFAULT_LIGHTS;
-
-            //add sound and hide notif after its selected
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            notification.defaults |= Notification.DEFAULT_SOUND;
-
-            // http://docs.pushwoosh.com/docs/android-faq#custom-intent-receiver
+            ////Changed by Ken
             //Get default launcher intent for clarity
-            Intent notificationIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-            notificationIntent.addCategory("android.intent.category.LAUNCHER");
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+            intent.addCategory("android.intent.category.LAUNCHER");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
+            ////
+
+            //// Added by Ken
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                Notification.Builder builder = new Notification.Builder(context)
+                        //.setLargeIcon(Utils.getBitmap(context,LargeIcon()))
+                        .setContentTitle(pushTitle)
+                        .setContentText(notifMsg)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                        .setSmallIcon(icon);
 
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+                //NotificationManager mNotificationManager = (NotificationManager) Acty.getSystemService(Context.NOTIFICATION_SERVICE);
 
-            mNotificationManager.notify(1, notification);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "PushNotification Notification Channel", NotificationManager.IMPORTANCE_DEFAULT);
+                    channel.enableLights(true);
+                    mNotificationManager.createNotificationChannel(channel);
+                    builder.setChannelId(CHANNEL_ID);
+                }
+
+                notification = builder.build();
+
+                mNotificationManager.notify(1, notification);
+            } else {
+                //Do Nothing if sdk is lower than JELLY_BEAN because "Notification build()" was introduced at JELLY_BEAN API16
+            }
+            ////
+
 
         }
     }
