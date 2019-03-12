@@ -1160,8 +1160,8 @@ public class YaVersion {
 
   public static final String ACCEPTABLE_COMPANION_PACKAGE = "com.appybuilder.companiongold";
 
-  public static final String PREFERRED_COMPANION = "5.05";
-  public static final String [] ACCEPTABLE_COMPANIONS = { "5.05" };
+  public static final String PREFERRED_COMPANION = "5.06";
+  public static final String [] ACCEPTABLE_COMPANIONS = { "5.05", "5.06" };
 
   public static final String COMPANION_UPDATE_URL = "";
   public static final String COMPANION_UPDATE_URL1 = "";

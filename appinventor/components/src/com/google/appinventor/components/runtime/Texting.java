@@ -123,7 +123,6 @@ import android.Manifest;
 
 @SimpleObject
 @UsesPermissions(permissionNames =
-  "android.permission.READ_PHONE_STATE, " +   //target 26 requires this permission setting
   "com.google.android.apps.googlevoice.permission.RECEIVE_SMS, " +
   "com.google.android.apps.googlevoice.permission.SEND_SMS, " +
   "android.permission.ACCOUNT_MANAGER, android.permission.MANAGE_ACCOUNTS, " +
