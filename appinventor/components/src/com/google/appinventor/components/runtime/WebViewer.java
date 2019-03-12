@@ -175,18 +175,7 @@ public final class WebViewer extends AndroidViewComponent implements ActivityRes
     }
 
     private void resetWebView() {
-//    Context applicationContext = container.$form().getApplicationContext();
-//    resources = applicationContext.getResources(); // do this only one time at initial constructor
-//    LayoutInflater mInflater = (LayoutInflater) applicationContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-//    int myLayout = resources.getIdentifier("lvimageview", "layout", applicationContext.getPackageName());
-//
-//    View convertView = mInflater.inflate(myLayout, null);
-//    progressBar = (ProgressBar) convertView.findViewById(resources.getIdentifier("progressBar", "id", applicationContext.getPackageName()));
-//    webview = (WebView) convertView.findViewById(resources.getIdentifier("webView1", "id", applicationContext.getPackageName()));
         setupClient();
-        //todo: set h,w of both progressBar and webview to user-selected
-        // set the initial default properties.  Height and Width
-        // will be fill-parent, which will be the default for the web viewer.
     }
 
     private void setupClient() {
@@ -212,7 +201,7 @@ public final class WebViewer extends AndroidViewComponent implements ActivityRes
             // for Lollipop, all in one
             public boolean onShowFileChooser(
                     WebView webView, ValueCallback<Uri[]> filePathCallback,
-                    WebChromeClient.FileChooserParams fileChooserParams) {
+                    FileChooserParams fileChooserParams) {
 //                Log.d(LOG_TAG, "onShowFileChooser invoked 1");
 
                 if (mFilePathCallback != null) {

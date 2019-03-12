@@ -101,8 +101,6 @@ public class AdAmazon extends AndroidViewComponent implements OnDestroyListener,
     public void TestMode(boolean enabled) {
         this.debugEnabled = enabled;
 
-        //todo: 2   create a method allowing user to setup the ad size
-        // For debugging purposes enable logging, but disable for production builds
         AdRegistration.enableLogging(enabled);
         // For debugging purposes flag all ad requests as tests, but set to false for production builds
         AdRegistration.enableTesting(enabled);

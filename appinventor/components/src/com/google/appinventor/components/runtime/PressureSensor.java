@@ -2,12 +2,6 @@
 // https://www.gnu.org/licenses/gpl-3.0.en.html
 package com.google.appinventor.components.runtime;
 
-//todo: check following to implement pressure sensor
-//   http://developer.samsung.com/android/technical-docs/Developing-Android-Application-Using-Atmospheric-Pressure-Sensor
-
-
-
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -135,8 +129,6 @@ public class PressureSensor extends AndroidNonvisibleComponent
     }
 
     /**
-     * todo: add comment here. Do we need this method at all?? This was taken from proximity sensor
-     *
      * @return Sensor's maximum range.
      */
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)

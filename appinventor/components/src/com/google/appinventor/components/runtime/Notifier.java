@@ -717,7 +717,6 @@ public final class Notifier extends AndroidNonvisibleComponent implements Compon
         toast.show();
         break;
         default:
-          // same as 1. todo: put 1 and this into a method call
           toast = StyledToast.makeText(form, notice, StyledToast.LENGTH_LONG, StyledToast.SUCCESS, false);
           if (!showAtBottom) toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
           toast.show();
