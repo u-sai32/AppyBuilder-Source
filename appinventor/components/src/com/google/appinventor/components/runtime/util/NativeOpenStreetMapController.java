@@ -254,7 +254,9 @@ class NativeOpenStreetMapController implements MapController, MapListener {
   private final AppInventorLocationSensorAdapter locationProvider;
 
   NativeOpenStreetMapController(final Form form) {
+    // Use per-app User-Agent for OpenStreetMap (#1582)
     OpenStreetMapTileProviderConstants.setUserAgentValue(form.getApplication().getPackageName());
+
     File osmdroid = new File(form.getCacheDir(), "osmdroid");
     if (osmdroid.exists() || osmdroid.mkdirs()) {
       Configuration.getInstance().setOsmdroidBasePath(osmdroid);
