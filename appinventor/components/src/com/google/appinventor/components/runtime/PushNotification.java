@@ -426,9 +426,6 @@ public class PushNotification extends AndroidNonvisibleComponent implements Comp
                         .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
                         .setSmallIcon(icon);
 
-
-                //NotificationManager mNotificationManager = (NotificationManager) Acty.getSystemService(Context.NOTIFICATION_SERVICE);
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "PushNotification Notification Channel", NotificationManager.IMPORTANCE_DEFAULT);
                     channel.enableLights(true);
