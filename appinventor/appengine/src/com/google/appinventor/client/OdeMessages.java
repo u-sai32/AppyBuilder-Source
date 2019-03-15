@@ -8390,6 +8390,10 @@ public interface OdeMessages extends Messages {
   @Description("OneSignalPush")
   String oneSignalPushComponentPallette();
 
+  @DefaultMessage("PlayerId")
+  @Description("")
+  String PlayerIdProperties();
+
   @DefaultMessage("OneSignalPush component allows you to send Push Notification messages using OneSignal.<p>For more info on sending " +
           "Push Notifications, please see here:  <a target=\"_blank\" href=\"http://https://goo.gl/oQVcwm\">OneSignal</a>")
   @Description("")
