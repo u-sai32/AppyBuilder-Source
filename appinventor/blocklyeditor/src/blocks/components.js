@@ -31,11 +31,12 @@ Blockly.ComponentBlock = {};
  * Block Colors Hues (See blockly.js for Saturation and Value - fixed for
  * all blocks)
  */
-Blockly.ComponentBlock.COLOUR_EVENT = Blockly.CONTROL_CATEGORY_HUE;
+// Blockly.ComponentBlock.COLOUR_EVENT = Blockly.CONTROL_CATEGORY_HUE;
+Blockly.ComponentBlock.COLOUR_EVENT = Blockly.EVENT_CATEGORY_HUE;
 Blockly.ComponentBlock.COLOUR_METHOD = Blockly.PROCEDURE_CATEGORY_HUE;
-Blockly.ComponentBlock.COLOUR_GET = '#439970';  // [67, 153, 112]
-Blockly.ComponentBlock.COLOUR_SET = '#266643';  // [38, 102, 67]
-Blockly.ComponentBlock.COLOUR_COMPONENT = '#439970';  // [67, 153, 112]
+Blockly.ComponentBlock.COLOUR_GET = '#71ce9c';  // [67, 153, 112]
+Blockly.ComponentBlock.COLOUR_SET = '#0f9e84';  // [38, 102, 67]
+Blockly.ComponentBlock.COLOUR_COMPONENT = '#71ce9c';  // [67, 153, 112]
 
 Blockly.ComponentBlock.COMPONENT_SELECTOR = "COMPONENT_SELECTOR";
 

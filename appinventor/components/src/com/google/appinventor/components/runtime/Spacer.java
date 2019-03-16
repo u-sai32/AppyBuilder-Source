@@ -28,6 +28,7 @@ public class Spacer extends AndroidViewComponent implements Component {
         container.$add(this);
          BackgroundColor(Component.COLOR_LTGRAY);
          Height(10);
+         // Visible(true);
     }
 
     // This was added, but causes build issue if color is changed. Keeping method, and just forcing lightGray.
