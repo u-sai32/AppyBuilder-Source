@@ -6,16 +6,14 @@ import android.util.Log;
 import com.google.appinventor.components.annotations.*;
 import com.google.appinventor.components.common.ComponentCategory;
 import com.google.appinventor.components.common.PropertyTypeConstants;
-import com.onesignal.OSNotification;
-import com.onesignal.OSNotificationAction;
-import com.onesignal.OSNotificationOpenResult;
-import com.onesignal.OneSignal;
+import com.onesignal.*;
 import org.json.JSONObject;
-@DesignerComponent(category=ComponentCategory.ADVANCED,
-        description="change this xxxxxxxxxxxxxxxxxxxxxxxx Non-visible component that provides push notification using the OneSignal service. Please refer to the <a href=\"http://onesignal.com/\">OneSignal</a> for more information.",
-        iconName="images/onesignal.png", nonVisible=true, version=1)
+
+@DesignerComponent(category = ComponentCategory.ADVANCED,
+        description = "change this xxxxxxxxxxxxxxxxxxxxxxxx Non-visible component that provides push notification using the OneSignal service. Please refer to the <a href=\"http://onesignal.com/\">OneSignal</a> for more information.",
+        iconName = "images/onesignal.png", nonVisible = true, version = 1)
 @SimpleObject
-@UsesLibraries(libraries="google-play-services.jar,onesignal.jar")
+@UsesLibraries(libraries = "google-play-services.jar,onesignal.jar")
 @UsesPermissions(permissionNames = "com.google.android.c2dm.permission.RECEIVE, android.permission.WAKE_LOCK, android.permission.VIBRATE, android.permission.ACCESS_NETWORK_STATE, android.permission.RECEIVE_BOOT_COMPLETED, com.sec.android.provider.badge.permission.READ, com.sec.android.provider.badge.permission.WRITE, com.htc.launcher.permission.READ_SETTINGS, com.htc.launcher.permission.UPDATE_SHORTCUT, com.sonyericsson.home.permission.BROADCAST_BADGE, com.sonymobile.home.permission.PROVIDER_INSERT_BADGE, com.anddoes.launcher.permission.UPDATE_COUNT, com.majeur.launcher.permission.UPDATE_BADGE, com.huawei.android.launcher.permission.CHANGE_BADGE, com.huawei.android.launcher.permission.READ_SETTINGS, com.huawei.android.launcher.permission.WRITE_SETTINGS")
 public class OneSignalPush extends AndroidNonvisibleComponent
         implements Component
@@ -25,11 +23,11 @@ public class OneSignalPush extends AndroidNonvisibleComponent
     private boolean subscriptionEnabled = true;
     private boolean vibrateEnabled = true;
     private boolean soundEnabled = true;
+    private String playerId = "";
 
     // https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/Eclipse/OneSignalExample/src/com/onesignal/example/ExampleApplication.java
-   // https://documentation.onesignal.com/v3.0/docs/android-sdk-setup
-    public OneSignalPush(ComponentContainer container)
-    {
+    // https://documentation.onesignal.com/v3.0/docs/android-sdk-setup
+    public OneSignalPush(ComponentContainer container) {
         super(container.$form());
         this.container = container;
         // Logging set to help debug issues, remove before releasing your app.
@@ -47,11 +45,10 @@ public class OneSignalPush extends AndroidNonvisibleComponent
         SoundEnabled(soundEnabled);
     }
 
-    @DesignerProperty(editorType= PropertyTypeConstants.PROPERTY_TYPE_STRING, defaultValue = "OneSignal App ID")
-    @SimpleProperty(userVisible=true)
-    public void AppId(String appId)
-    {
-        //Allowing user to programaticayy setup onesignal app id - sdk api: https://documentation.onesignal.com/docs/android-native-sdk
+    @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING, defaultValue = "OneSignal App ID")
+    @SimpleProperty(userVisible = true)
+    public void AppId(String appId) {
+        //Allowing user to programmatically setup onesignal app id - sdk api: https://documentation.onesignal.com/docs/android-native-sdk
         OneSignal.init(container.$context(), null, appId, new NotificationOpenHandler(), new ExampleNotificationReceivedHandler());
         // OneSignal.init(context, null, oneSignalAppId, NotificationOpenedHandler, NotificationReceivedHandler)
     }
@@ -108,46 +105,57 @@ public class OneSignalPush extends AndroidNonvisibleComponent
         // This fires when a notification is opened by tapping on it.
 
     }
-        @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
-        @SimpleProperty(description = "Opt users in or out of receiving notifications. Default is true")
-        public void SubscriptionEnabled(boolean enabled) {
-            if (subscriptionEnabled == enabled) return;
 
-            this.subscriptionEnabled = enabled;
-            OneSignal.setSubscription(enabled);
+    @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
+    @SimpleProperty(description = "Opt users in or out of receiving notifications. Default is true")
+    public void SubscriptionEnabled(boolean enabled) {
+        this.subscriptionEnabled = enabled;
+        OneSignal.setSubscription(enabled);
+    }
+
+    @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Reports if notification is enabled or not")
+    public boolean SubscriptionEnabled() {
+        return subscriptionEnabled;
+    }
+
+
+    @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
+    @SimpleProperty(description = "Enables / disables push notification vibration. Default is true")
+    public void VibrateEnabled(boolean enabled) {
+        if (vibrateEnabled == enabled) return;
+
+        this.vibrateEnabled = enabled;
+        OneSignal.enableVibrate(enabled);
+    }
+
+    @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Reports if notification vibration is enabled or not")
+    public boolean VibrateEnabled() {
+        return vibrateEnabled;
+    }
+
+    @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
+    @SimpleProperty(description = "Enables / disables push notification sound. Default is true")
+    public void SoundEnabled(boolean enabled) {
+        if (soundEnabled == enabled) return;
+
+        this.soundEnabled = enabled;
+        OneSignal.enableSound(enabled);
+    }
+
+    @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Reports if notification sound is enabled or not")
+    public boolean SoundEnabled() {
+        return soundEnabled;
+    }
+
+
+    @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Returns OneSignal Player / User ID. If not set, returns empty string")
+    public final String PlayerId() {
+        OSPermissionSubscriptionState state = OneSignal.getPermissionSubscriptionState();
+
+        if (state.getSubscriptionStatus().getUserId() != null) {
+            this.playerId = state.getSubscriptionStatus().getUserId();
         }
 
-        @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Reports if notification is enabled or not")
-        public boolean SubscriptionEnabled() {
-            return subscriptionEnabled;
-        }
-
-
-        @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
-        @SimpleProperty(description = "Enables / disables push notification vibration. Default is true")
-        public void VibrateEnabled(boolean enabled) {
-            if (vibrateEnabled == enabled) return;
-
-            this.vibrateEnabled = enabled;
-            OneSignal.enableVibrate(enabled);
-        }
-        @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Reports if notification vibration is enabled or not")
-        public boolean VibrateEnabled() {
-            return vibrateEnabled;
-        }
-
-        @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
-        @SimpleProperty(description = "Enables / disables push notification sound. Default is true")
-        public void SoundEnabled(boolean enabled) {
-            if (soundEnabled == enabled) return;
-
-            this.soundEnabled = enabled;
-            OneSignal.enableSound(enabled);
-        }
-
-        @SimpleProperty(category = PropertyCategory.BEHAVIOR, description = "Reports if notification sound is enabled or not")
-        public boolean SoundEnabled() {
-            return soundEnabled;
-        }
-
+        return this.playerId;
+    }
 }
