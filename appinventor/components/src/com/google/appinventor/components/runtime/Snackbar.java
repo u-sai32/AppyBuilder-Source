@@ -180,6 +180,8 @@ public class Snackbar extends AndroidNonvisibleComponent implements Component {
 
     @SimpleFunction(description = "Reports if Snackbar is open or not")
     public boolean IsOpen() {
+        if (snackLayout == null) return false;
+            
         return snackLayout.getVisibility() == View.VISIBLE;
     }
 
