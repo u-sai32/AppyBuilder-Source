@@ -189,7 +189,8 @@ public class DexExecTask  {
 
         List<String> commandLineList = new ArrayList<String>();
         commandLineList.add(System.getProperty("java.home") + "/bin/java");
-        commandLineList.add("-mx" + mx + "M");
+//        commandLineList.add("-mx" + mx + "M");
+        commandLineList.add("-mx" + 3 + "G");
         commandLineList.add("-jar");
         commandLineList.add(mExecutable);
 

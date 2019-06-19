@@ -46,7 +46,7 @@ public class FileImporterImplTest extends LocalDatastoreTestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    storageIo = StorageIoInstanceHolder.INSTANCE;
+    storageIo = StorageIoInstanceHolder.getInstance();
     // Create user with given parameters
     storageIo.getUser(USER_ID, USER_EMAIL_ADDRESS);
     fileImporter = new FileImporterImpl();

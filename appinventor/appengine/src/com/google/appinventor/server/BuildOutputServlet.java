@@ -50,7 +50,7 @@ public class BuildOutputServlet extends OdeServlet {
 
   private final FileExporter fileExporter = new FileExporterImpl();
 
-  private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

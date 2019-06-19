@@ -106,7 +106,7 @@ public class ProjectServiceTest {
   @Before
   public void setUp() throws Exception {
     helper.setUp();
-    storageIo = StorageIoInstanceHolder.INSTANCE;
+    storageIo = StorageIoInstanceHolder.getInstance();
 
     PowerMock.mockStatic(LocalUser.class);
     localUserMock = PowerMock.createMock(LocalUser.class);

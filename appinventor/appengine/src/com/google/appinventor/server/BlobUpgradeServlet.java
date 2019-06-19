@@ -39,7 +39,7 @@ public class BlobUpgradeServlet extends OdeServlet {
   // Logging support
   private static final Logger LOG = Logger.getLogger(BlobUpgradeServlet.class.getName());
   private static final CapabilitiesService caps = CapabilitiesServiceFactory.getCapabilitiesService();
-  private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp)

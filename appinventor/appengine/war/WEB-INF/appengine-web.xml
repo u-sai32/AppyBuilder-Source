@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application></application>
+  <!--
+    Using java8 along with url-stream-handler of native (default urlfetch) to overcome the 10mb limit
+    https://cloud.google.com/appengine/docs/standard/#instance_classes
+    https://cloud.google.com/appengine/docs/standard/java/config/appref#scaling_elements_basic_scaling
+    https://cloud.google.com/appengine/docs/standard/java/quickstart
+  -->
   <url-stream-handler>native</url-stream-handler>
   <runtime>java8</runtime>
-  <version>1</version>
+  <version>49</version>
 
   <instance-class>F1</instance-class> <!-- F1: Basic for autoscaling. If B series (e.g. B2), then use below -->
+  <!--<basic-scaling>
+    <max-instances>11</max-instances>
+    <idle-timeout>10m</idle-timeout>
+  </basic-scaling>-->
+  <!-- Devs:
+    o. Compiler requires your own map key
+    o. For Deployment, ADD GitHub, analytics from index.html
+    analytics for gold
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-88836135-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+    o. YaClient.gwt.xml   - make sure languages are NOT commented out
+    o. bump-up version number in app-engine
+	o. build server. Is it localhost? AND NOT local or TEST
+	o. gcs.bucket: goldappybuilder
+    o. Companion version: (YaVersion & project.properties)
+
+    o. blacklist=true and whitelist = false?
+    o. Did you set the index chat server?
+    o. on server3, nginx running on port 9990, but for same box use launcher.sh -p 9992 because loadbalancer is configured that wasy
+    -->
 
   <!-- Configure serving/caching of GWT files -->
   <static-files>
@@ -60,6 +94,8 @@
 
   <!-- Enable concurrency in the app engine server -->
   <system-properties>
+    <!-- Don't need below because now we are using java8 and native (see above) -->
+    <!--<property name="appengine.api.urlfetch.defaultDeadline" value="40"/> &lt;!&ndash; default 5 &ndash;&gt;-->
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
 
     <!-- note that the file: is necessary as part of the value for this property, because
@@ -81,8 +117,10 @@
          Inventor server unless they are listed in the appengine/war/whitelist file -->
     <property name="use.whitelist" value="false"/>
 
+    <!-- TODO 1: set bucket to empty string before checkin -->
     <!-- Name of storage bucket in Google Cloud Store -->
-    <property name="gcs.bucket" value="" />
+    <property name="gcs.bucket" value="goldappybuilder.appspot.com" />
+
     <!-- Whether or not to use GCS for storage -->
     <property name="use.gcs" value="true" />
 
@@ -116,7 +154,8 @@
     <property name="localauth.mailserver.password" value="changeme" />
 
     <!-- host[:port] to use for connecting to the build server -->
-    <property name="build.server.host" value="localhost:9990" />
+    <property name="build.server.host" value="63.142.252.156:9990" /> <!-- production Server 8 ubunto 16 with NGINX -->
+    <!--<property name="build.server.host" value="localhost:9990" />-->
 
     <!-- host[:port] to tell build server the app host url to callback
          when deploy AppInventor on other GAE implementation such as
@@ -161,8 +200,6 @@
     <!-- Firebase Secret for the shared datastore -->
     <property name="firebase.secret" value="" />
     <property name="firebase.url" value="" />
-    <!-- TODO: Update below to point to your own firebase accout-->
-    <property name="private.firebase.url" value="https://YOUR-FIREBASE-PROJECT-ID.firebaseio.com/PROJECT-ID/acct" />
 
     <property name="library.url" value="http://appybuilder.com/explore/reference" />
     <property name="get_started.url" value="http://appybuilder.com/explore/get-started" />
@@ -178,12 +215,20 @@
     <property name="community.url" value="http://community.appybuilder.com/" />
     <property name="reference.components.url" value="/reference/components/" />
 
-    <!-- CloudDB secret keys - Update to your own cloudDB-->
-    <property name="clouddb.server" value="changeme!"/>
-    <property name="clouddb.uuid.secret" value="changeme!"/>
-    <property name="clouddb.secret" value="mydifficultpassword" />
+    <!-- CloudDB secret keys -->
+    <property name="clouddb.server" value="clouddb.appinventor.mit.edu"/>
+    <property name="clouddb.uuid.secret" value="1bd8b82e-f253-11e7-ac14-9a214cf093ae"/>
+    <property name="clouddb.secret" value="C7uFtZt84pgcFiQPbaebJPWoM8XrqJpH2TXK7JgLja9jCPRgYYRsG31xQQuMAesTy34rPzxUd778xnuQUKmZUTcjpyKr9qwGQvD4K1rPe6ddFyt6m9oQE" />
 
+    <!--<property name="clouddb.uuid.secret" value="changeme!"/>-->
 
+    <!--<property name="clouddb.server" value="104.251.212.194"/>-->
+    <!--<property name="clouddb.uuid.secret" value="1bd8b82e-f253-11e7-ac14-9a214cf093ae"/>-->
+    <!--<property name="clouddb.secret" value="mydifficultpassword" />-->
+
+    <!--<property name="clouddb.server" value="104.251.212.194"/>-->
+    <!--<property name="clouddb.uuid.secret" value="changeme!"/>-->
+    <!--<property name="clouddb.secret" value="mydifficultpassword" />-->
   </system-properties>
 
 

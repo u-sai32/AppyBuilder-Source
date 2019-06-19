@@ -62,7 +62,7 @@ public class ProjectServiceImpl extends OdeRemoteServiceServlet implements Proje
 
   private static final long serialVersionUID = -8316312003804169166L;
 
-  private final transient StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final transient StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   // RPC implementation for YoungAndroid projects
   private final transient YoungAndroidProjectService youngAndroidProject =

@@ -661,4 +661,15 @@ public interface StorageIo {
   List<AdminUser> searchUsers(String partialEmail);
   void storeUser(AdminUser user) throws AdminInterfaceException;
 
+  /**
+   * Checks that the user identified by {@code userId} has a reference to the project identified
+   * by {@code projectId}. If a corresponding UserProjectData is not found, this function throws
+   * a SecurityException to indicate unauthorized access.
+   *
+   * @param userId id for the user
+   * @param projectId id for the project
+   * @throws SecurityException if the user doesn't have access to the project
+   */
+  void assertUserHasProject(String userId, long projectId);
+
 }

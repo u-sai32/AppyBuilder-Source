@@ -47,7 +47,7 @@ public class ComponentServiceImpl extends OdeRemoteServiceServlet
   private static final Logger LOG =
       Logger.getLogger(ComponentServiceImpl.class.getName());
 
-  private final transient StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final transient StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   private final FileImporter fileImporter = new FileImporterImpl();
 

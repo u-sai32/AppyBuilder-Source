@@ -55,7 +55,7 @@ public final class FileImporterImpl implements FileImporter {
 
   private static final Logger LOG = Logger.getLogger(FileImporterImpl.class.getName());
 
-  private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   @Override
   public UserProject importProject(String userId, String projectName,

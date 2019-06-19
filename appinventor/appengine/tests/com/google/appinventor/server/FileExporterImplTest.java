@@ -61,7 +61,7 @@ public class FileExporterImplTest extends LocalDatastoreTestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    storageIo = StorageIoInstanceHolder.INSTANCE;
+    storageIo = StorageIoInstanceHolder.getInstance();
     exporter = new FileExporterImpl();
     Project project = new Project(PROJECT_NAME);
     project.setProjectType(FAKE_PROJECT_TYPE);

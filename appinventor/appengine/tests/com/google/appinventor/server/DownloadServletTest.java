@@ -26,6 +26,9 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
 import static org.easymock.EasyMock.expect;
+import com.google.appinventor.server.storage.StorageIo;
+import com.google.appinventor.server.storage.StorageIoInstanceHolder;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Tests for {@link DownloadServlet}. Mocks out FileExporter. Mainly tests
@@ -53,6 +56,7 @@ public class DownloadServletTest {
 
   private FileExporterImpl exporterMock;
   private LocalUser localUserMock;
+  private StorageIo storageIoMock;
 
   @Before
   public void setUp() throws Exception {
@@ -62,6 +66,9 @@ public class DownloadServletTest {
     expect(localUserMock.getUserId()).andReturn(USER_ID).anyTimes();
     exporterMock = PowerMock.createNiceMock(FileExporterImpl.class);
     PowerMock.expectNew(FileExporterImpl.class).andReturn(exporterMock).anyTimes();
+
+    storageIoMock = PowerMock.createNiceMock(StorageIo.class);
+    StorageIoInstanceHolder.setInstance(storageIoMock);
 
     dummyZip = new ProjectSourceZip(DUMMY_ZIP_FILENAME, new byte[] {}, 2);
     dummyZipWithTitle = new ProjectSourceZip(DUMMY_ZIP_FILENAME_WITH_TITLE, new byte[] {}, 2);
@@ -77,6 +84,8 @@ public class DownloadServletTest {
 
   @Test
   public void testDownloadProjectSourceZipWithoutTitle() throws Exception {
+    storageIoMock.assertUserHasProject(USER_ID, PROJECT_ID);
+    PowerMock.expectLastCall().once();
     MockHttpServletRequest request = new MockHttpServletRequest(DOWNLOAD_URL +
         "project-source/1234");
     expect(exporterMock.exportProjectSourceZip(USER_ID, PROJECT_ID, true, false, null, false, false, false, false))
@@ -92,6 +101,8 @@ public class DownloadServletTest {
 
   @Test
   public void testDownloadProjectSourceZipWithTitle() throws IOException {
+    storageIoMock.assertUserHasProject(USER_ID, PROJECT_ID);
+    PowerMock.expectLastCall().once();
     MockHttpServletRequest request = new MockHttpServletRequest(DOWNLOAD_URL +
         "project-source/1234/My Project Title 123");
     expect(exporterMock.exportProjectSourceZip(USER_ID, PROJECT_ID, true, false,
@@ -108,20 +119,15 @@ public class DownloadServletTest {
 
   @Test
   public void testDownloadProjectSourceZipWithNonExistingProject() throws IOException {
-    IllegalArgumentException expectedException = new IllegalArgumentException();
-    MockHttpServletRequest request = new MockHttpServletRequest(DOWNLOAD_URL +
-        "project-source/12345");
-    expect(exporterMock.exportProjectSourceZip(USER_ID, 12345L, true, false, null, false, false, false, false))
-        .andThrow(expectedException);
+    storageIoMock.assertUserHasProject(USER_ID, 12345L);
+    PowerMock.expectLastCall().andThrow(new SecurityException());
     PowerMock.replayAll();
+    MockHttpServletRequest request = new MockHttpServletRequest(DOWNLOAD_URL +
+            "project-source/12345");
     DownloadServlet download = new DownloadServlet();
-    try {
-      download.doGet(request, new MockHttpServletResponse());
-      fail();
-    } catch (IllegalArgumentException ex) {
-      assertEquals(expectedException, ex);
-    }
-    PowerMock.verifyAll();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    download.doGet(request, response);
+    assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
 
   @Test

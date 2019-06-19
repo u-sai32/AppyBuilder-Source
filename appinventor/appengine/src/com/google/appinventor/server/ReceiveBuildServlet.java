@@ -40,7 +40,7 @@ public class ReceiveBuildServlet extends OdeServlet {
   private static final Logger LOG = Logger.getLogger(ReceiveBuildServlet.class.getName());
 
   private final OdeAuthFilter odeFilter = new OdeAuthFilter();
-  private final transient StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final transient StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

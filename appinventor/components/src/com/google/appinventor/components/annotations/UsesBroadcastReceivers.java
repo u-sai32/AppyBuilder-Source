@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
  * @author will2596@gmail.com (William Byrne)
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 public @interface UsesBroadcastReceivers {
 
   /**
