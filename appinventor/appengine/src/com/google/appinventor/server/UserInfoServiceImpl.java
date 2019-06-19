@@ -27,7 +27,7 @@ import com.google.appinventor.shared.storage.StorageUtil;
 public class UserInfoServiceImpl extends OdeRemoteServiceServlet implements UserInfoService {
 
   // Storage of user settings
-  private final transient StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final transient StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   private static final long serialVersionUID = -7316312435338169166L;
 

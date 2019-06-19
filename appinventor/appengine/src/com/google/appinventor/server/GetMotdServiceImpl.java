@@ -38,7 +38,7 @@ public class GetMotdServiceImpl extends OdeRemoteServiceServlet implements GetMo
   private static final Flag<Integer> motdCheckIntervalSecs =
     Flag.createFlag("motd.check.interval.secs", 300);
 
-  private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   private final MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
 

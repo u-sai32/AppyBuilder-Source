@@ -94,7 +94,7 @@ public class ObjectifyGalleryStorageIo implements  GalleryStorageIo {
 
   // we'll need to talk to the StorageIo to get developer names, so...
   private final transient StorageIo storageIo =
-      StorageIoInstanceHolder.INSTANCE;
+      StorageIoInstanceHolder.getInstance();
 
   /**
    * creates a new gallery app

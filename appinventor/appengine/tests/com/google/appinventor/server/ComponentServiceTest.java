@@ -55,7 +55,7 @@ public class ComponentServiceTest {
   @Before
   public void setUp() throws Exception {
     helper.setUp();
-    StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+    StorageIo storageIo = StorageIoInstanceHolder.getInstance();
     LocalUser localUserMock = LocalUser.getInstance();
     localUserMock.set(new User("1", "NonSuch", "NoName", null, 0, false, false, 0, null));
     localUserMock.setSessionId("test-session");
@@ -278,7 +278,8 @@ public class ComponentServiceTest {
   }
 
   private void assertAssetsWithPrefixRemoved(String prefix) {
-    List<String> files = StorageIoInstanceHolder.INSTANCE.getProjectSourceFiles("1", projectId);
+    List<String> files = StorageIoInstanceHolder.getInstance()
+            .getProjectSourceFiles("1", projectId);
     for (String name : files) {
       if (name.startsWith(prefix)) {
         fail("Expected for file " + name + " to be deleted.");
@@ -287,7 +288,8 @@ public class ComponentServiceTest {
   }
 
   private void assertAssetsOnServer(String path) {
-    List<String> files = StorageIoInstanceHolder.INSTANCE.getProjectSourceFiles("1", projectId);
+    List<String> files = StorageIoInstanceHolder.getInstance()
+            .getProjectSourceFiles("1", projectId);
     for (String name : files) {
       if (name.equals(path)) {
         return;

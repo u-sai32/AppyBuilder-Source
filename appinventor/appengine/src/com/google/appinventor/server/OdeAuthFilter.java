@@ -59,7 +59,7 @@ public class OdeAuthFilter implements Filter {
   private static Crypter crypter = null; // accessed through getCrypter only
   private static final Object crypterSync = new Object();
 
-  private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   // Whether this server should use a whitelist to determine who can
   // access it. Value is specified in the <system-properties> section

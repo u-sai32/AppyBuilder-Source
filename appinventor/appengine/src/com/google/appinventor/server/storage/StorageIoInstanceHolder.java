@@ -9,6 +9,8 @@
 
 package com.google.appinventor.server.storage;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * Holds the singleton StorageIo subclass object. We introduce this class
  * so that we can switch out the underlying StorageIo subclass without changing
@@ -18,8 +20,20 @@ package com.google.appinventor.server.storage;
  *
  */
 public class StorageIoInstanceHolder {
-  public static final StorageIo INSTANCE = new ObjectifyStorageIo();
+  private static StorageIo INSTANCE;
   
   private StorageIoInstanceHolder() {} // not to be instantiated
-    
+
+  public static StorageIo getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new ObjectifyStorageIo();
+    }
+    return INSTANCE;
+  }
+
+  @VisibleForTesting
+  public static void setInstance(StorageIo instance) {
+    INSTANCE = instance;
+  }
+
 }

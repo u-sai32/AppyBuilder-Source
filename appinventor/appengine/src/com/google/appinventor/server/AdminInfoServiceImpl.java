@@ -33,7 +33,7 @@ import com.google.appinventor.server.util.PasswordHash;
 public class AdminInfoServiceImpl extends OdeRemoteServiceServlet implements AdminInfoService {
 
   // Storage of user settings
-  private final transient StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final transient StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   /**
    * Returns a list of AdminUsers, up to 20, based on the starting

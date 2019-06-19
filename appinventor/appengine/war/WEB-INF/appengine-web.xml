@@ -3,7 +3,7 @@
   <application></application>
   <url-stream-handler>native</url-stream-handler>
   <runtime>java8</runtime>
-  <version>1</version>
+  <version>2</version>
 
   <instance-class>F1</instance-class> <!-- F1: Basic for autoscaling. If B series (e.g. B2), then use below -->
 
@@ -161,8 +161,6 @@
     <!-- Firebase Secret for the shared datastore -->
     <property name="firebase.secret" value="" />
     <property name="firebase.url" value="" />
-    <!-- TODO: Update below to point to your own firebase accout-->
-    <property name="private.firebase.url" value="https://YOUR-FIREBASE-PROJECT-ID.firebaseio.com/PROJECT-ID/acct" />
 
     <property name="library.url" value="http://appybuilder.com/explore/reference" />
     <property name="get_started.url" value="http://appybuilder.com/explore/get-started" />

@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
  */
 public final class FileExporterImpl implements FileExporter {
 
-  private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   @Override
   public RawFile exportProjectOutputFile(String userId, long projectId, @Nullable String target)

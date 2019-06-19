@@ -36,7 +36,7 @@ public class AndroidServlet extends OdeServlet {
   // Content type for response header (to avoid security vulnerabilities)
   private static final String CONTENT_TYPE = "text/html; charset=utf-8";
 
-  private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
+  private final StorageIo storageIo = StorageIoInstanceHolder.getInstance();
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
