@@ -46,6 +46,18 @@ public final class MockComponentsUtil {
 //  static void setWidgetForegroundColor(Widget widget, String color) {
 //    widget.getElement().getStyle().setColor("#" + getHexString(color, 6));
 //  }
+  
+  /**
+   * Clears the background color of a widget to its default by CSS rules.
+   *
+   * @param widget  widget to remove the background color for
+   */
+  static void resetWidgetBackgroundColor(Widget widget) {
+    Element el = widget.getElement();
+    if (el != null) {
+      el.getStyle().clearBackgroundColor();
+    }
+  }
 
   /**
    * Sets the background image for the given widget.
@@ -118,6 +130,18 @@ public final class MockComponentsUtil {
       DOM.setStyleAttribute(widget.getElement(), "color", "transparent");
     } else {
       DOM.setStyleAttribute(widget.getElement(), "color", "#" + getHexString(color, 6));
+    }
+  }
+  
+  /**
+   * Clears the text color of a widget to its default by CSS rules
+   *
+   * @param widget  widget to remove the text color for
+   */
+  static void resetWidgetTextColor(Widget widget) {
+    Element el = widget.getElement();
+    if (el != null) {
+      el.getStyle().clearColor();
     }
   }
 
