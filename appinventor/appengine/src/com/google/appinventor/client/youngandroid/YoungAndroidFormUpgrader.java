@@ -18,6 +18,7 @@ import com.google.appinventor.client.editor.simple.components.MockVisibleCompone
 import com.google.appinventor.client.output.OdeLog;
 import com.google.appinventor.client.properties.json.ClientJsonString;
 import com.google.appinventor.common.utils.StringUtils;
+import com.google.appinventor.components.common.ComponentConstants;
 import com.google.appinventor.components.common.YaVersion;
 import com.google.appinventor.shared.properties.json.JSONArray;
 import com.google.appinventor.shared.properties.json.JSONValue;
@@ -998,6 +999,20 @@ public final class  YoungAndroidFormUpgrader {
     }
    if (srcCompVersion < 24) {
       srcCompVersion = 24;
+    }
+    
+    if (srcCompVersion < 25) {
+      // The AccentColor property was added.
+      // The ActionBar property was added.
+      // The PrimaryColor property was added.
+      // The PrimaryColorDark property was added.
+      // The Theme property was added.
+      srcCompVersion = 25;
+      componentProperties.put("AccentColor", new ClientJsonString(ComponentConstants.DEFAULT_ACCENT_COLOR));
+      componentProperties.put("ActionBar", new ClientJsonString("False"));
+      componentProperties.put("PrimaryColor", new ClientJsonString(ComponentConstants.DEFAULT_PRIMARY_COLOR));
+      componentProperties.put("PrimaryColorDark", new ClientJsonString(ComponentConstants.DEFAULT_PRIMARY_DARK_COLOR));
+      componentProperties.put("Theme", new ClientJsonString(ComponentConstants.DEFAULT_THEME));
     }
     return srcCompVersion;
   }
