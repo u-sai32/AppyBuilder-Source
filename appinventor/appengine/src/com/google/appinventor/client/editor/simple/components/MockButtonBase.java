@@ -127,7 +127,7 @@ abstract class MockButtonBase extends MockVisibleComponent {
     switch(shape) {
       case 0:
         // Default Button
-        DOM.setStyleAttribute(buttonWidget.getElement(), "borderRadius", "0px");
+        buttonWidget.getElement().getStyle().clearBorderStyle();
         break;
       case 1:
         // Rounded Button.
@@ -163,9 +163,10 @@ abstract class MockButtonBase extends MockVisibleComponent {
     }
     if (MockComponentsUtil.isDefaultColor(text)) {
       // CSS background-color for ode-SimpleMockButton (copied from Ya.css)
-      text = "&HFFE8E8E8";
+       MockComponentsUtil.resetWidgetBackgroundColor(buttonWidget);
+    } else {
+      MockComponentsUtil.setWidgetBackgroundColor(buttonWidget, text);
     }
-    MockComponentsUtil.setWidgetBackgroundColor(buttonWidget, text);
   }
 
   /*
@@ -245,9 +246,10 @@ abstract class MockButtonBase extends MockVisibleComponent {
    */
   private void setTextColorProperty(String text) {
     if (MockComponentsUtil.isDefaultColor(text)) {
-      text = "&HFF000000";  // black
+      MockComponentsUtil.resetWidgetTextColor(buttonWidget);
+    } else {
+      MockComponentsUtil.setWidgetTextColor(buttonWidget, text);
     }
-    MockComponentsUtil.setWidgetTextColor(buttonWidget, text);
   }
 
   private final void updatePreferredSizeOfButton() {
