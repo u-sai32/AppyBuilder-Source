@@ -63,7 +63,21 @@ public final class YoungAndroidSettings extends Settings {
     addProperty(new EditableProperty(this,
             SettingsConstants.YOUNG_ANDROID_SETTINGS_APPLICATION_PACKAGE, "",
             EditableProperty.TYPE_INVISIBLE));
-
+     addProperty(new EditableProperty(this,
+        SettingsConstants.YOUNG_ANDROID_SETTINGS_ACTIONBAR, "false",
+        EditableProperty.TYPE_INVISIBLE));
+    addProperty(new EditableProperty(this,
+        SettingsConstants.YOUNG_ANDROID_SETTINGS_THEME, "AppTheme.Light.DarkActionBar",
+        EditableProperty.TYPE_INVISIBLE));
+    addProperty(new EditableProperty(this,
+        SettingsConstants.YOUNG_ANDROID_SETTINGS_PRIMARY_COLOR, "&HFFA5CF47",
+        EditableProperty.TYPE_INVISIBLE));
+    addProperty(new EditableProperty(this,
+        SettingsConstants.YOUNG_ANDROID_SETTINGS_PRIMARY_COLOR_DARK, "&HFF41521C",
+        EditableProperty.TYPE_INVISIBLE));
+    addProperty(new EditableProperty(this,
+        SettingsConstants.YOUNG_ANDROID_SETTINGS_ACCENT_COLOR, "&HFF00728A",
+        EditableProperty.TYPE_INVISIBLE));
     addProperty(new EditableProperty(this, SettingsConstants.YOUNG_ANDROID_SETTINGS_MinAPI, "14", EditableProperty.TYPE_INVISIBLE));
     addProperty(new EditableProperty(this, SettingsConstants.YOUNG_ANDROID_SETTINGS_MaxAPI, "26", EditableProperty.TYPE_INVISIBLE));
   }
