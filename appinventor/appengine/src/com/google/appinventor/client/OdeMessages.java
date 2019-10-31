@@ -6744,6 +6744,38 @@ public interface OdeMessages extends Messages {
   @DefaultMessage("Reload")
   @Description("")
   String reloadWindow();
+  
+  @DefaultMessage("PrimaryColor")
+  @Description("")
+  String PrimaryColorProperties();
+
+  @DefaultMessage("PrimaryColorDark")
+  @Description("")
+  String PrimaryColorDarkProperties();
+
+  @DefaultMessage("AccentColor")
+  @Description("")
+  String AccentColorProperties();
+
+  @DefaultMessage("Theme")
+  @Description("")
+  String ThemeProperties();
+
+  @DefaultMessage("Default")
+  @Description("")
+  String defaultTheme();
+
+  @DefaultMessage("Black Title Text")
+  @Description("")
+  String blackTitleTheme();
+
+  @DefaultMessage("Dark")
+  @Description("")
+  String darkTheme()
+   
+  @DefaultMessage("ActionBar")
+  @Description("")
+  String ActionBarProperties();
 
  @DefaultMessage("AdExpanded")
   @Description("")
