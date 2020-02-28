@@ -23,7 +23,7 @@ jobs:
         run: ant noplay
         working-directory: appinventor
       - name: 'Build Companion'
-        run: ant PlayApp
+        run: ant
         working-directory: appinventor
       - name: 'Upload Companion to Artifacts'
         uses: actions/upload-artifact@v1.0.0
