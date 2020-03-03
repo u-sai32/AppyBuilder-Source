@@ -38,3 +38,9 @@ jobs:
         with:
           name: Test Reports
           path: appinventor/reports
+      - name: 'War Zip'
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Pack War
+          path: appinventor/appengine/build/war
+  
