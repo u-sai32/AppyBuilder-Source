@@ -43,4 +43,11 @@ jobs:
         with:
           name: Pack War
           path: appinventor/appengine/build/war
-  
+      - name: 'BuildServer Tar'
+        run: ant BuildDeploymentTar
+        working-directory: appinventor/buildserver
+      - name: 'Pack BuildServer'
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Pack War
+          path: appinventor/build/buildserver/BuildServer.tar
