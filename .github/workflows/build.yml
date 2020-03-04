@@ -19,6 +19,9 @@ jobs:
       - name: 'Make Auth Key'
         run: ant MakeAuthKey
         working-directory: appinventor
+      - name: 'Clean Build'
+        run: ant clean
+        working-directory: appinventor
       - name: 'Build AppyBuilder'
         run: ant noplay
         working-directory: appinventor
